@@ -1,0 +1,71 @@
+package com.cmbi.tradingmo.bookingbond.service.impl;
+
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.cmbi.tradingmo.bookingbond.common.constant.TTLConstant;
+import com.cmbi.tradingmo.bookingbond.dao.mapper.TmoBondOrderListMapper;
+import com.cmbi.tradingmo.bookingbond.domain.dto.QueryOrderInfoReqDTO;
+import com.cmbi.tradingmo.bookingbond.domain.dto.QueryOrderInfoRspDTO;
+import com.cmbi.tradingmo.bookingbond.domain.po.TmoBondOrderListPO;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+/**
+ * 下单服务
+ *
+ * @author cpp
+ * @Date 2021/11/30 16:38
+ */
+@Service
+@Slf4j
+public class QueryOrderServiceImpl {
+    @Autowired
+    private TmoBondOrderListMapper tmoBondOrderListMapper;
+
+    public QueryOrderInfoRspDTO queryOrder(QueryOrderInfoReqDTO reqDto) {
+        LambdaQueryWrapper<TmoBondOrderListPO> userLambdaQueryWrapper = Wrappers.lambdaQuery();
+        if (reqDto.getClientID() != null) {
+            userLambdaQueryWrapper.eq(TmoBond111OrderListPO::getSubAccountId, reqDto.getClientID());
+        }
+        if (reqDto.getMarketID() != null) {
+            userLambdaQueryWrapper.eq(TmoBondOrderListPO::getMarketId, reqDto.getMarketID());
+        }
+        if (reqDto.getOrderGroupID() != null) {
+            userLambdaQueryWrapper.eq(TmoBondO111rderListPO::getOrderGroupId, reqDto.getOrderGroupID());
+        }
+        if (reqDto.getBoardID() != null) {
+            userLambdaQueryWrapper.eq(TmoBondOrderListPO::getOrderId, reqDto.getBoardID());
+        }
+        if (reqDto.getSysID() != null) {
+            userLambdaQueryWrapper.eq(TmoBondOrderListPO::getSysId, reqDto.getSysID());
+        }
+        if (reqDto.getOperatorID() != null) {
+            userLambdaQueryWrapper.eq(TmoBondOrderListPO::getOrderId, reqDto.getOperatorID());
+        }
+        if (reqDto.getChannelID() != null) {
+            userLambdaQueryWrapper.eq(TmoBondOrderListPO::getChannelId, reqDto.getChannelID());
+        }
+        if (reqDto.getStartDate() != null) {
+            userLambdaQueryWrapper.ge(TmoBondOrderListPO::getTradeDate, reqDto.getStartDate());
+        }
+        if (reqDto.getEndDate() != null) {
+            userLambdaQueryWrapper.le(TmoBondOrderListPO::getTradeDate, reqDto.getEndDate());
+        }
+
+        if (reqDto.getAeIDList() != null && reqDto.getAeIDList().size() > 0) {
+            userLambdaQueryWrapper.in(TmoBondOrderListPO::getAeId, reqDto.getAeIDList());
+        }
+        //pageSize=100
+        if (reqDto.getPage() == null || reqDto.getPage() < 1) {
+            reqDto.setPage(1);
+        }
+        Page<TmoBondOrderListPO> page = new Page<>(reqDto.getPage(), 100);
+        IPage<TmoBondOrderListPO> orderIPage = tmoBondOrderListMapper.selectPage(page, userLambdaQueryWrapper);
+        QueryOrderInfoRspDTO rspDTO =
+                new QueryOrderInfoRspDTO(TTLConstant.STATUS_RTN_CODE_SUCCESS, "查询成功", orderIPage, reqDto);
+        return rspDTO;
+    }
+}

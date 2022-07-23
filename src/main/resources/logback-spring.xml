@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+    <!-- 文件输出格式 -->
+    <property name="PATTERN" value="[%date-%t] [%level] [%logger:%line] [%thread] traceLogid:[%X{TRACE_LOG_ID}] %msg%n"/>
+    <!-- 生产日志文件路径 -->
+    <property name="LOG_PATH" value="logs"/>
+    <property name="APPLICATION_NAME" value="easycompare"/>
+    <timestamp key="TIMESTAMP" datePattern="yyyy-MM-dd"/>
+    <!-- 编码格式设置 -->
+    <property name="CHARSET" value="UTF-8"/>
+
+    <!-- 开发环境 -->
+    <!--appender代表日志展示的位置
+        name:输出的别名
+        class:以哪种方式输出
+    -->
+
+    <springProfile name="local">
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>${PATTERN}</pattern>
+                <charset>${CHARSET}</charset>
+            </encoder>
+        </appender>
+
+        <!-- 每天产生一个文件 -->
+        <appender name="LOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${LOG_PATH}${file.separator}${APPLICATION_NAME}-${TIMESTAMP}.log</file>
+            <encoder>
+                <pattern>>${PATTERN}</pattern>
+                <charset>${CHARSET}</charset>
+            </encoder>
+            <!-- 文件路径 -->
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <!-- 文件名称 -->
+                <fileNamePattern>${LOG_PATH}${file.separator}${APPLICATION_NAME}-%d{yyyy-MM-dd}-manager.%i.log
+                </fileNamePattern>
+                <maxFileSize>10MB</maxFileSize>
+                <!-- 日志文件保留天数 -->
+                <MaxHistory>3</MaxHistory>
+                <!--日志文件的总大小-->
+                <totalSizeCap>300MB</totalSizeCap>
+            </rollingPolicy>
+        </appender>
+
+        <logger name="com.cmbi.tradingmo.bookingbond" level="debug"/>
+        <!--项目中的根日志 只能出现一次-->
+        <root level="info">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="LOG_FILE"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="dev">
+
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>${PATTERN}</pattern>
+                <charset>${CHARSET}</charset>
+            </encoder>
+        </appender>
+
+        <!-- 每天产生一个文件 -->
+        <appender name="LOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${LOG_PATH}${file.separator}${APPLICATION_NAME}-${TIMESTAMP}.log</file>
+            <encoder>
+                <pattern>>${PATTERN}</pattern>
+                <charset>${CHARSET}</charset>
+            </encoder>
+            <!-- 文件路径 -->
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <!-- 文件名称 -->
+                <fileNamePattern>${LOG_PATH}${file.separator}${APPLICATION_NAME}-%d{yyyy-MM-dd}-manager.%i.log
+                </fileNamePattern>
+                <maxFileSize>100MB</maxFileSize>
+                <!-- 日志文件保留天数 -->
+                <MaxHistory>30</MaxHistory>
+                <!--日志文件的总大小-->
+                <totalSizeCap>2GB</totalSizeCap>
+            </rollingPolicy>
+        </appender>
+
+        <logger name="com.cmbi.toss.tradeoperate" level="debug"/>
+        <!--项目中的根日志 只能出现一次-->
+        <root level="info">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="LOG_FILE"/>
+        </root>
+    </springProfile>
+
+
+    <springProfile name="test">
+
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>${PATTERN}</pattern>
+                <charset>${CHARSET}</charset>
+            </encoder>
+        </appender>
+
+        <!-- 每天产生一个文件 -->
+        <appender name="LOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${LOG_PATH}${file.separator}${APPLICATION_NAME}-${TIMESTAMP}.log</file>
+            <encoder>
+                <pattern>>${PATTERN}</pattern>
+                <charset>${CHARSET}</charset>
+            </encoder>
+            <!-- 文件路径 -->
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <!-- 文件名称 -->
+                <fileNamePattern>${LOG_PATH}${file.separator}${APPLICATION_NAME}-%d{yyyy-MM-dd}-manager.%i.log
+                </fileNamePattern>
+                <maxFileSize>300MB</maxFileSize>
+                <!-- 日志文件保留天数 -->
+                <MaxHistory>30</MaxHistory>
+                <!--日志文件的总大小-->
+                <totalSizeCap>10GB</totalSizeCap>
+            </rollingPolicy>
+        </appender>
+
+        <logger name="com.cmbi.tradingmo.bookingbond" level="debug"/>
+        <!--项目中的根日志 只能出现一次-->
+        <root level="info">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="LOG_FILE"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="uat">
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>${PATTERN}</pattern>
+                <charset>${CHARSET}</charset>
+            </encoder>
+        </appender>
+
+        <!-- 每天产生一个文件 -->
+        <appender name="LOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${LOG_PATH}${file.separator}${APPLICATION_NAME}-${TIMESTAMP}.log</file>
+            <encoder>
+                <pattern>>${PATTERN}</pattern>
+                <charset>${CHARSET}</charset>
+            </encoder>
+            <!-- 文件路径 -->
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <!-- 文件名称 -->
+                <fileNamePattern>${LOG_PATH}${file.separator}${APPLICATION_NAME}-%d{yyyy-MM-dd}-manager.%i.log
+                </fileNamePattern>
+                <maxFileSize>300MB</maxFileSize>
+                <!-- 日志文件保留天数 -->
+                <MaxHistory>30</MaxHistory>
+                <!--日志文件的总大小-->
+                <totalSizeCap>10GB</totalSizeCap>
+            </rollingPolicy>
+        </appender>
+
+        <logger name="com.cmbi.tradingmo.bookingbond" level="debug"/>
+        <!--项目中的根日志 只能出现一次-->
+        <root level="info">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="LOG_FILE"/>
+        </root>
+    </springProfile>
+
+    <!-- 生产环境 -->
+    <springProfile name="prod">
+
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>${PATTERN}</pattern>
+                <charset>${CHARSET}</charset>
+            </encoder>
+        </appender>
+
+        <!-- 每天产生一个文件 -->
+        <appender name="LOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${LOG_PATH}${file.separator}${APPLICATION_NAME}-${TIMESTAMP}.log</file>
+            <encoder>
+                <pattern>>${PATTERN}</pattern>
+                <charset>${CHARSET}</charset>
+            </encoder>
+            <!-- 文件路径 -->
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <!-- 文件名称 -->
+                <fileNamePattern>${LOG_PATH}${file.separator}${APPLICATION_NAME}-%d{yyyy-MM-dd}-manager.%i.log
+                </fileNamePattern>
+                <maxFileSize>300MB</maxFileSize>
+                <!-- 日志文件保留天数 -->
+                <MaxHistory>30</MaxHistory>
+                <!--日志文件的总大小-->
+                <totalSizeCap>10GB</totalSizeCap>
+            </rollingPolicy>
+        </appender>
+
+        <logger name="com.cmbi.tradingmo.bookingbond" level="info"/>
+        <!--项目中的根日志 只能出现一次-->
+        <root level="info">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="LOG_FILE"/>
+        </root>
+    </springProfile>
+</configuration>

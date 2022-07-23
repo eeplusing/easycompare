@@ -1,0 +1,19 @@
+server:
+  port: ${SERVER_PORT:8080}
+  # jetty配置(一般只需要配下面的3个核心参数)
+  jetty:
+    threads:
+      # 最小线程数(默认8)
+      min: ${JETTY_THREADS_MIN:8}
+      # 最大线程数(请求量大的服务可调大, 默认200)
+      max: ${JETTY_THREADS_MAX:200}
+      # 线程空闲时间(超过此时间则回收, 请求量大的服务可调大, 降低线程回收的频率, 默认60000)
+      idle-timeout: ${JETTY_THREADS_IDEL_TIMEOUT:60000}
+spring:
+  profiles:
+    active: ${DEPLOYMODE:local}
+  mvc:
+    static-path-pattern: /static/**
+  web:
+    resources:
+      static-locations: classpath:/static/
